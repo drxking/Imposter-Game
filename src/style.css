@@ -1,0 +1,34 @@
+@import "tailwindcss";
+
+* {
+    font-family: "Montserrat";
+    box-sizing: border-box;
+}
+
+
+
+input[type="checkbox"] {
+  /* ...existing styles */
+  display: grid;
+  place-content: center;
+  outline: none;
+  border: none;
+}
+
+input[type="checkbox"]::before {
+  content: "⚔️";
+  /* font-size: 20px; */
+  width: 1em;
+  height: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: scale(0);
+  /* transition: 120ms transform ease-in-out; */
+  /* box-shadow: inset 1em 1em var(--form-control-color); */
+  background-color: black;
+}
+
+input[type="checkbox"]:checked::before {
+  transform: scale(1);
+}
