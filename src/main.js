@@ -18,9 +18,42 @@ let startButton = document.getElementById("start-button")
 let wordBox = document.getElementById("wordBox")
 let playerBox = document.getElementById("player-box")
 
+
 function generateRandom(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+function createRandomGenerator(min, max) {
+    let numbers = [];
+    let index = 0;
+
+    function shuffle() {
+        numbers = [];
+        for (let i = min; i <= max; i++) {
+            numbers.push(i);
+        }
+
+        // Fisher–Yates shuffle
+        for (let i = numbers.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [numbers[i], numbers[j]] = [numbers[j], numbers[i]];
+        }
+
+        index = 0;
+    }
+
+    shuffle();
+
+    return function () {
+        if (index >= numbers.length) {
+            shuffle(); // reset when finished
+        }
+
+        return numbers[index++];
+    };
+}
+
+
 
 addButton.addEventListener("click", increment)
 subButton.addEventListener("click", decrement)
@@ -121,15 +154,13 @@ function buttonClick() {
             wordBox.innerText = "No one Knows!!!";
             startButton.innerText = "Reveal Word";
         }
-
         inView = false
     }
 }
 
-
-
+let wordGenerator = createRandomGenerator(0, gameData.length - 1);
 function startGame() {
-    word = gameData[generateRandom(0, gameData.length - 1)];
+    word = gameData[wordGenerator()];
     imposter = generateRandom(1, playerCount);
     console.log(word)
     wordRender()
@@ -167,4 +198,5 @@ function saveAndRestart() {
     settingBox.classList.add("hidden")
     settingStatus = 0;
     endGame();
+    wordGenerator = createRandomGenerator(0, gameData.length - 1);
 }
