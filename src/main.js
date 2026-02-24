@@ -61,7 +61,7 @@ saveAndRestartButton.addEventListener("click", saveAndRestart)
 startButton.addEventListener("click", buttonClick)
 
 settingButton.addEventListener("click", () => {
-    console.log("Hello")
+
     if (settingStatus) {
         settingBox.classList.add("hidden")
         settingStatus = 0;
@@ -114,8 +114,7 @@ let inView = false;
 
 function buttonClick() {
     if (!inView) {
-        console.log(currentViewer)
-        console.log("CLicked")
+
         if (currentViewer == 1) {
             startGame()
             startButton.innerText = "Hide and Pass"
@@ -136,8 +135,6 @@ function buttonClick() {
         }
         else if (currentViewer == playerCount + 3) {
             endGame()
-            console.log("REsart")
-            // inView = true;
         }
         else {
             wordRender();
@@ -150,8 +147,8 @@ function buttonClick() {
             wordBox.innerText = "Guess The Imposter";
             startButton.innerText = "Reveal Imposter";
         } else {
-            playerBox.innerText = `Player ${currentViewer}`;
-            wordBox.innerText = "No one Knows!!!";
+            playerBox.innerText = ` `;
+            wordBox.innerText = `Player ${currentViewer}`;
             startButton.innerText = "Reveal Word";
         }
         inView = false
@@ -162,7 +159,7 @@ let wordGenerator = createRandomGenerator(0, gameData.length - 1);
 function startGame() {
     word = gameData[wordGenerator()];
     imposter = generateRandom(1, playerCount);
-    console.log(word)
+
     wordRender()
 }
 
@@ -185,16 +182,16 @@ function endGame() {
 
 
 function saveAndRestart() {
-    console.log("Saved");
     gameData = [];
     document.querySelectorAll(".series-checkbox").forEach((e) => {
         if (e.checked) {
-            console.log(e.value)
             gameData = [...gameData, ...data[e.value]]
-
         }
     })
-    console.log(gameData)
+    if (gameData.length < 1) {
+        gameData = [...data['GOT']]
+        document.getElementById("GOT").checked = true;
+    }
     settingBox.classList.add("hidden")
     settingStatus = 0;
     endGame();
